@@ -24,7 +24,7 @@ struct EmailAddressLoginView: View {
                 ProgressView()
             }
             if let errorMessage = viewModel.errorMessage {
-                Text(errorMessage).foregroundStyle(Color.red)
+                Text(errorMessage).foregroundStyle(Color.themeRed)
             }
             
             TextField("Email Address", text:$email).textInputAutocapitalization(.never)

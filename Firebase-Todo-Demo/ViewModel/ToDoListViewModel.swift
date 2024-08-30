@@ -1,5 +1,5 @@
 //
-//  TaskListViewModel.swift
+//  ToDoListViewModel.swift
 //  Firebase-Todo-Demo
 //
 //  Created by Josh Edson on 8/29/24.
@@ -10,6 +10,7 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseAnalytics
+
 @Observable class ToDoListViewModel {
     
     var user:User?
@@ -18,6 +19,7 @@ import FirebaseAnalytics
     var toDoItems:[ToDoItem] = []
     var documentCollection:CollectionReference?
     var isLoading:Bool = false
+
     
     private var db = Firestore.firestore()
     private var listener:(any ListenerRegistration)?
@@ -74,8 +76,27 @@ import FirebaseAnalytics
                         toDoItems.append(item)
                     }
                 }
+                toDoItems.sort {$0.createDate < $1.createDate}
             }
         
+    }
+    func deleteToDoItem(_ item:ToDoItem) {
+        errorMessage = nil
+        if let id = item.id {
+            documentCollection?.document(id).delete {(error) in
+                self.errorMessage = error?.localizedDescription
+            }
+        }
+        
+    }
+    func addToDoItemNamed(_ name:String) {
+
+        guard let uid = user?.uid else {
+            errorMessage = "User not signed in"
+            return
+        }
+        let item = ToDoItem(uid: uid, name: name)
+        addToDoItem(item)
     }
     
     func addToDoItem(_ item:ToDoItem) {
@@ -84,6 +105,17 @@ import FirebaseAnalytics
             let _ = try documentCollection?.addDocument(from: item)
         } catch {
             errorMessage = error.localizedDescription
+        }
+    }
+    
+    func saveToDoItem(_ item:ToDoItem) {
+        errorMessage = nil
+        if let id = item.id {
+            do {
+                try documentCollection?.document(id).setData(from: item)
+            } catch  {
+                errorMessage = error.localizedDescription
+            }
         }
     }
     
