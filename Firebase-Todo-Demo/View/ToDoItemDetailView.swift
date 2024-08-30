@@ -8,11 +8,15 @@
 import SwiftUI
 
 struct ToDoItemDetailView: View {
+    let viewModel:ToDoItemViewModel
+    
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
-#Preview {
-    ToDoItemDetailView()
-}
+/*
+ #Preview {
+ ToDoItemDetailView()
+ }
+ */

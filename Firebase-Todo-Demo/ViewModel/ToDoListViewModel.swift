@@ -113,38 +113,7 @@ import FirebaseAnalytics
             errorMessage = error.localizedDescription
         }
     }
-    func toggleDoneStatus(_ item:ToDoItem) {
-        errorMessage = nil
-        isLoading = true
-        if let id = item.id {
-            documentCollection?.document(id).updateData(["done":!item.done]) {(error) in
-                    if let error = error {
-                        self.errorMessage = error.localizedDescription
-                        
-                    }
-                    self.isLoading = false
-                }
-            
-        }
-    }
-    func saveToDoItem(_ item:ToDoItem) {
-        errorMessage = nil
-        isLoading = true
-        if let id = item.id {
-            do {
-                try documentCollection?.document(id).setData(from: item) {(error) in
-                    if let error = error {
-                        self.errorMessage = error.localizedDescription
-                        
-                    }
-                    self.isLoading = false
-                }
-            } catch  {
-                self.errorMessage = error.localizedDescription
-                self.isLoading = false
-            }
-        }
-    }
+
     
 }
 

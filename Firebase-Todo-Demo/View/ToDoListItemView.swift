@@ -9,18 +9,25 @@ import SwiftUI
 
 struct ToDoListItemView: View {
     @State var item:ToDoItem
-    @State var viewModel:ToDoListViewModel
+    @State var viewModel:ToDoItemViewModel
     
-    init(item:ToDoItem, viewModel:ToDoListViewModel) {
+    init(item:ToDoItem, viewModel:ToDoItemViewModel) {
         self.item = item
         self.viewModel = viewModel
     }
     var body: some View {
         HStack {
-            Button("", systemImage: item.done ? "checkmark.circle.fill":"circle") {
-                viewModel.toggleDoneStatus(item)
+            Button("", systemImage: viewModel.doneState ? "checkmark.circle.fill":"circle") {
+                withAnimation {
+                    viewModel.toggleDoneStatus(item)
+                }
             }.sensoryFeedback(.success, trigger: item.done)
             Text(item.name)
+            Spacer()
+            Button("", systemImage:"info.circle") {
+                return
+            }.foregroundStyle(Color.secondary)
+                
         }
     }
 }

@@ -20,13 +20,16 @@ struct ToDoListView: View {
             List {
                 Section {
                     ForEach(viewModel.toDoItems, id:\.self) { item in
-                        ToDoListItemView(item:item, viewModel:viewModel)
+                        ToDoListItemView(item:item, viewModel:ToDoItemViewModel(item))
                         
                     }.onDelete {(offsets) in
-                        for offset in offsets {
-                            let i = viewModel.toDoItems.index(viewModel.toDoItems.startIndex, offsetBy:offset)
-                            viewModel.deleteToDoItem(viewModel.toDoItems[i])
+                        withAnimation {
+                            for offset in offsets {
+                                let i = viewModel.toDoItems.index(viewModel.toDoItems.startIndex, offsetBy:offset)
+                                viewModel.deleteToDoItem(viewModel.toDoItems[i])
+                            }
                         }
+
                         
                     }
                 }
@@ -38,8 +41,10 @@ struct ToDoListView: View {
                             
                             guard !newToDoItemName.isEmpty else {return}
 
-
-                            viewModel.addToDoItemNamed(newToDoItemName)
+                            withAnimation {
+                                viewModel.addToDoItemNamed(newToDoItemName)
+                            }
+                            
                             
                         }
                         
