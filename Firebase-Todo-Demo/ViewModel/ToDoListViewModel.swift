@@ -68,17 +68,23 @@ import FirebaseAnalytics
                 errorMessage = error?.localizedDescription
                 return
             }
-            
-            if let snapshot = snapshot {
-                toDoItems = []
-                for document in snapshot.documents {
-                    if let item = try? document.data(as: ToDoItem.self) {
-                        toDoItems.append(item)
-                    }
-                }
-                toDoItems.sort {$0.createDate < $1.createDate}
-            }
         
+            guard let documents = snapshot?.documents else {
+                errorMessage = "Snapshot has no documents"
+                return
+            }
+            
+        toDoItems = documents.compactMap{snapshot in
+            let result = Result { try snapshot.data(as: ToDoItem.self)}
+            switch result {
+            case .success(let item):
+                return item
+            case .failure(let err):
+                errorMessage = err.localizedDescription
+            }
+            return nil
+        }.sorted {$0.createDate < $1.createDate}
+
     }
     func deleteToDoItem(_ item:ToDoItem) {
         errorMessage = nil
@@ -107,14 +113,35 @@ import FirebaseAnalytics
             errorMessage = error.localizedDescription
         }
     }
-    
+    func toggleDoneStatus(_ item:ToDoItem) {
+        errorMessage = nil
+        isLoading = true
+        if let id = item.id {
+            documentCollection?.document(id).updateData(["done":!item.done]) {(error) in
+                    if let error = error {
+                        self.errorMessage = error.localizedDescription
+                        
+                    }
+                    self.isLoading = false
+                }
+            
+        }
+    }
     func saveToDoItem(_ item:ToDoItem) {
         errorMessage = nil
+        isLoading = true
         if let id = item.id {
             do {
-                try documentCollection?.document(id).setData(from: item)
+                try documentCollection?.document(id).setData(from: item) {(error) in
+                    if let error = error {
+                        self.errorMessage = error.localizedDescription
+                        
+                    }
+                    self.isLoading = false
+                }
             } catch  {
-                errorMessage = error.localizedDescription
+                self.errorMessage = error.localizedDescription
+                self.isLoading = false
             }
         }
     }

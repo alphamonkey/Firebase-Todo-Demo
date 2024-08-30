@@ -18,8 +18,7 @@ struct ToDoListItemView: View {
     var body: some View {
         HStack {
             Button("", systemImage: item.done ? "checkmark.circle.fill":"circle") {
-                item.done.toggle()
-                viewModel.saveToDoItem(item)
+                viewModel.toggleDoneStatus(item)
             }.sensoryFeedback(.success, trigger: item.done)
             Text(item.name)
         }
