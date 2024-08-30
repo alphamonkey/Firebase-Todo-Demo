@@ -24,15 +24,7 @@ import FirebaseFirestore
     private var db = Firestore.firestore()
     var isLoading = false
     
-    var isOverDue:Bool {
-        if let _ = item.dueDate {
-            if dueDate.timeIntervalSinceNow < 0 {
-                return true
-            }
-        }
-        return false
-    }
-    
+
     init(_ item:ToDoItem) {
         self.item = item
         self.name = item.name
@@ -50,14 +42,7 @@ import FirebaseFirestore
         documentCollection = db.collection("Users/\(item.uid)/ToDoItems")
         
     }
-    func formattedDate() -> String? {
-        if let date = item.dueDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MM/dd/YY hh:mm"
-            return dateFormatter.string(from: date)
-        }
-        return nil
-    }
+
     func toggleDoneStatus() {
         errorMessage = nil
         isLoading = true

@@ -33,8 +33,8 @@ struct ToDoListItemView: View {
                 }
                 VStack (alignment:.leading) {
                     Text(viewModel.item.name)
-                    if let dueDate = viewModel.formattedDate() {
-                        Text(dueDate).foregroundStyle(viewModel.isOverDue ? Color.themeRed : Color.secondary).font(.footnote)
+                    if let dueDate = viewModel.item.formattedDate() {
+                        Text(dueDate).foregroundStyle(viewModel.item.isOverDue ? Color.themeRed : Color.secondary).font(.footnote)
                     }
                 }
             }
