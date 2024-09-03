@@ -11,14 +11,21 @@ struct ToDoItemDetailView: View {
     
     @State var viewModel:ToDoItemViewModel
     @Binding var isPresented:Bool
+    @State var showPicker = false
+    @State var imageToUpload = UIImage()
+    
     
     init(viewModel:ToDoItemViewModel, isPresented:Binding<Bool>) {
         self.viewModel = viewModel
         self._isPresented = isPresented
+        self.viewModel.downloadImage()
     }
+    
     var body: some View {
         VStack {
-            
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage).foregroundStyle(Color.themeRed)
+            }
             TextField("", text:$viewModel.name)
             TextField("Description", text:$viewModel.description, axis:.vertical).lineLimit(5...10)
             
@@ -42,19 +49,47 @@ struct ToDoItemDetailView: View {
                     Text("🔥 Urgent").tag(3)
                 }
             }
-             
+            if(viewModel.isUploading) {
+                ProgressView().frame(width:400, height:400)
+            }
+            else if let image = viewModel.image {
+                Image(uiImage: image).resizable().scaledToFit().frame(width: 400.0, height:400.0)
+            }
             Spacer()
+            
+           
+            
+            
+ 
+            
             HStack {
-                Button("Save") {
-                    isPresented = false
-                    viewModel.saveToDoItem()
+                if(!viewModel.isUploading) {
+                    Button("Save") {
+                        isPresented = false
+                        viewModel.saveToDoItem()
 
-                }.foregroundStyle(Color.accentColor)
-                Spacer()
+                    }.foregroundStyle(Color.accentColor)
+                    Spacer()
+                    Button("Upload") {
+                        showPicker = true
+                    }
+                    Spacer()
+                }
+
                 Button("Cancel") {
                     isPresented = false
                 }.foregroundStyle(Color.themeRed)
             }.padding([.leading, .trailing], 100.0)
+            
+        
+        }.sheet(isPresented: $showPicker) {
+            ImagePicker(selectedImage: $imageToUpload)
+        }.onChange(of: imageToUpload) {
+            showPicker = false
+            if let data = imageToUpload.jpegData(compressionQuality: 0.8){
+                viewModel.image = imageToUpload
+                viewModel.uploadImage(data: data)
+            }
             
         }
 

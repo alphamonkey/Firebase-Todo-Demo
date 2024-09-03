@@ -74,7 +74,7 @@ import FirebaseAnalytics
                 return
             }
             
-        toDoItems = documents.compactMap{snapshot in
+        toDoItems = documents.compactMap{(snapshot:QueryDocumentSnapshot) in
             let result = Result { try snapshot.data(as: ToDoItem.self)}
             switch result {
             case .success(let item):

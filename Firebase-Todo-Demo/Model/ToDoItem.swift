@@ -17,6 +17,8 @@ struct ToDoItem:Codable, Identifiable, Hashable {
     var priority:Int?
     var createDate:Date
     var done = false
+    var imageDownloadURL:String?
+    var imageDownloadSize:Int64?
     
     init(uid:String, name:String, dueDate:Date?, description:String?, priority:Int?) {
         self.guid = UUID()

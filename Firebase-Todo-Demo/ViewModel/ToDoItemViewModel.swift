@@ -8,13 +8,14 @@
 import Foundation
 import SwiftUI
 import FirebaseFirestore
+import FirebaseStorage
 
 @Observable class ToDoItemViewModel {
-
+    
     var item:ToDoItem
     var errorMessage:String?
     var description:String
-    
+    var image:UIImage?
     var name:String
     var hasDueDate:Bool = false
     var dueDate:Date = Date()
@@ -23,7 +24,7 @@ import FirebaseFirestore
     var documentCollection:CollectionReference?
     private var db = Firestore.firestore()
     var isLoading = false
-    
+    var isUploading = false
 
     init(_ item:ToDoItem) {
         self.item = item
@@ -42,7 +43,70 @@ import FirebaseFirestore
         documentCollection = db.collection("Users/\(item.uid)/ToDoItems")
         
     }
+    func downloadImage() {
+        
+        if image != nil {
+            return
+        }
+        
+        guard let urlString = item.imageDownloadURL,
+        let maxSize = item.imageDownloadSize else {
+            return
+        }
+        
+        let storage = Storage.storage()
+        
 
+        
+        let downloadRef = storage.reference(forURL: urlString)
+        
+        downloadRef.getData(maxSize: maxSize, completion: {(data, error) in
+            if let err = error {
+                self.errorMessage = err.localizedDescription
+                return
+            }
+            else if let data = data {
+                print("Downloaded \(data.count) bytes")
+                self.image = UIImage(data: data)
+            }
+        })
+    
+    }
+    func uploadImage(data:Data) {
+        
+        let storage = Storage.storage()
+        let imageRef = storage.reference().child("images/\(item.uid)")
+        let fileName = "\(item.id!).jpg"
+        let fullPathRef = imageRef.child(fileName)
+       
+        isUploading = true
+        let _ = fullPathRef.putData(data) {(metadata, error) in
+            self.isUploading = false
+            if let error = error {
+                self.errorMessage = error.localizedDescription
+            }
+            
+            guard let metadata = metadata else {
+                self.errorMessage = "Unknown upload error"
+                return
+            }
+            
+            fullPathRef.downloadURL {(url, error) in
+                if let error = error {
+                    self.errorMessage = "Unable to retrieve download URL: \(error.localizedDescription)"
+                    return
+                }
+                self.item.imageDownloadURL = url?.absoluteString
+                self.item.imageDownloadSize = metadata.size
+             //   self.saveToDoItem()
+            }
+            
+            print("Successfully uploaded \(metadata.size) bytes")
+            
+        }
+        
+        
+    }
     func toggleDoneStatus() {
         errorMessage = nil
         isLoading = true
