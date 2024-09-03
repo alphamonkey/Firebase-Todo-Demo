@@ -15,7 +15,6 @@
 		BC0197072C824A80002B61A7 /* ToDoListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0197062C824A80002B61A7 /* ToDoListItemView.swift */; };
 		BC01970B2C8262C7002B61A7 /* ToDoItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC01970A2C8262C7002B61A7 /* ToDoItemViewModel.swift */; };
 		BC01970D2C826990002B61A7 /* ToDoItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC01970C2C826990002B61A7 /* ToDoItemDetailView.swift */; };
-		BC01970F2C828A2B002B61A7 /* testdogg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BC01970E2C828A2B002B61A7 /* testdogg.jpg */; };
 		BC0197112C828ADF002B61A7 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = BC0197102C828ADF002B61A7 /* FirebaseStorage */; };
 		BC0573C12C879A8B00C67F72 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0573C02C879A8B00C67F72 /* ImagePicker.swift */; };
 		BCF3A6402C80FE89000674E5 /* Firebase_Todo_DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF3A63F2C80FE89000674E5 /* Firebase_Todo_DemoApp.swift */; };
@@ -37,7 +36,6 @@
 		BC0197062C824A80002B61A7 /* ToDoListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoListItemView.swift; sourceTree = "<group>"; };
 		BC01970A2C8262C7002B61A7 /* ToDoItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemViewModel.swift; sourceTree = "<group>"; };
 		BC01970C2C826990002B61A7 /* ToDoItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoItemDetailView.swift; sourceTree = "<group>"; };
-		BC01970E2C828A2B002B61A7 /* testdogg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testdogg.jpg; sourceTree = "<group>"; };
 		BC0573C02C879A8B00C67F72 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BCF3A63C2C80FE89000674E5 /* Firebase-Todo-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Firebase-Todo-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF3A63F2C80FE89000674E5 /* Firebase_Todo_DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Firebase_Todo_DemoApp.swift; sourceTree = "<group>"; };
@@ -114,7 +112,6 @@
 		BCF3A63E2C80FE89000674E5 /* Firebase-Todo-Demo */ = {
 			isa = PBXGroup;
 			children = (
-				BC01970E2C828A2B002B61A7 /* testdogg.jpg */,
 				BC0197032C82284F002B61A7 /* Model */,
 				BC0197022C82283B002B61A7 /* ViewModel */,
 				BC0197012C822799002B61A7 /* View */,
@@ -202,7 +199,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BC01970F2C828A2B002B61A7 /* testdogg.jpg in Resources */,
 				BCF3A6492C80FE8E000674E5 /* Preview Assets.xcassets in Resources */,
 				BCF3A6462C80FE8E000674E5 /* Assets.xcassets in Resources */,
 				BCF3A6502C80FF37000674E5 /* GoogleService-Info.plist in Resources */,
