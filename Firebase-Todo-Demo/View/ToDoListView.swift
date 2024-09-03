@@ -18,7 +18,7 @@ struct ToDoListView: View {
     var body: some View {
         VStack {
             List {
-                Section {
+                Section("To Do List") {
                     ForEach(viewModel.toDoItems, id:\.self) { item in
                         ToDoListItemView(item:item, viewModel:ToDoItemViewModel(item))
                         

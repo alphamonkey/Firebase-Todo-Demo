@@ -20,15 +20,38 @@ import GoogleSignIn
     var toDoItems:[ToDoItem] = []
     var documentCollection:CollectionReference?
     var isLoading:Bool = false
-    
-    
+    var email = ""
+    var password = ""
+    let provider = OAuthProvider(providerID: "github.com")
     private var db = Firestore.firestore()
     private var listener:(any ListenerRegistration)?
     
     init() {
         let _ = Auth.auth().addStateDidChangeListener(handleAuthStateChange)
     }
-
+    func githubLogin() {
+        
+        provider.customParameters = ["allow_signup":"false"]
+        provider.scopes = ["read:user", "user:email"]
+        
+        provider.getCredentialWith(nil) {(credential, error) in
+            guard let credential = credential else {
+                self.errorMessage = "No credential retrieved"
+                return
+            }
+            if let error = error {
+                self.errorMessage = error.localizedDescription
+                return
+            }
+            Auth.auth().signIn(with:credential) {(authResult, error) in
+                if let error = error {
+                    self.errorMessage = error.localizedDescription
+                    return
+                }
+                
+            }
+        }
+    }
     func googleLogin() {
         Task {
             guard let clientID = FirebaseApp.app()?.options.clientID else {return}

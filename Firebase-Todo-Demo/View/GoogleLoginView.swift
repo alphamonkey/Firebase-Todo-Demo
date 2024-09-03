@@ -18,10 +18,41 @@ struct GoogleLoginView: View {
     }
     
     var body: some View {
-        GoogleSignInButton {
-            viewModel.googleLogin()
+        VStack {
+            
+            GoogleSignInButton {
+                viewModel.googleLogin()
+            }
+            Button {
 
+                viewModel.githubLogin()
+                    
+                
+            } label: {
+                Image("githublight").resizable().scaledToFit()
+            }
+            VStack {
+                if viewModel.isLoading {
+                    ProgressView()
+                }
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage).foregroundStyle(Color.themeRed)
+                }
+                
+                TextField("Email Address", text:$viewModel.email).textInputAutocapitalization(.never)
+                
+                SecureField("Password", text: $viewModel.password)
+                
+                Button("Log in") {
+                    guard !viewModel.email.isEmpty && !viewModel.password.isEmpty else {
+                        return;
+                    }
+                    viewModel.emailLogin(email: viewModel.email, password: viewModel.password)
+                }
+                
+            }
         }
+
     }
 }
 /*
