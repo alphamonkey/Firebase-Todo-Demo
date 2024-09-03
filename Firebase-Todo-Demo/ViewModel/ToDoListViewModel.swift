@@ -10,7 +10,8 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseAnalytics
-
+import FirebaseCore
+import GoogleSignIn
 @Observable class ToDoListViewModel {
     
     var user:User?
@@ -27,7 +28,24 @@ import FirebaseAnalytics
     init() {
         let _ = Auth.auth().addStateDidChangeListener(handleAuthStateChange)
     }
-    
+
+    func googleLogin() {
+        Task {
+            guard let clientID = FirebaseApp.app()?.options.clientID else {return}
+            
+            let config = GIDConfiguration(clientID: clientID)
+            GIDSignIn.sharedInstance.configuration = config
+            
+            if let scene = await UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootViewController = await scene.windows.first?.rootViewController {
+                let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
+                if let idToken = result.user.idToken?.tokenString {
+                    let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: result.user.accessToken.tokenString)
+                    try await Auth.auth().signIn(with: credential)
+                }
+            }
+        }
+    }
     func emailLogin(email:String, password:String) {
         errorMessage = nil
         isLoading = true

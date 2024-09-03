@@ -15,12 +15,29 @@ struct RootView: View {
     
     
     var body: some View {
-        VStack {
+        VStack(alignment:.leading) {
             if let _ = viewModel.user {
-                ToDoListView(viewModel:viewModel)
+                HStack {
+                    if let pic = viewModel.user?.photoURL
+                    {
+                        AsyncImage(url: pic, content: {image in
+                            image.resizable().scaledToFit().frame(width: 44.0, height:44.0).clipShape(Circle()).padding([.leading], 18.0)
+                            
+                        }, placeholder: {ProgressView()})
+                    }
+                    if let displayName = viewModel.user?.displayName {
+                        Text(displayName)
+                    }
+                    else {
+                        Text(viewModel.user?.email ?? "")
+                    }
+                }
+                Divider().overlay(Color.accentColor)
+                 ToDoListView(viewModel:viewModel)
             }
             else {
-                EmailAddressLoginView(viewModel: viewModel)
+                //EmailAddressLoginView(viewModel: viewModel)
+                GoogleLoginView(viewModel:viewModel)
             }
         }
         
