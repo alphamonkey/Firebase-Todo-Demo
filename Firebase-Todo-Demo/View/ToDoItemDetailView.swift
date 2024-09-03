@@ -58,17 +58,17 @@ struct ToDoItemDetailView: View {
             }
             Spacer()
             
-           
             
             
- 
+            
+            
             
             HStack {
                 if(!viewModel.isUploading) {
                     Button("Save") {
                         isPresented = false
                         viewModel.saveToDoItem()
-
+                        
                     }.foregroundStyle(Color.accentColor)
                     Spacer()
                     Button("Upload") {
@@ -76,28 +76,28 @@ struct ToDoItemDetailView: View {
                     }
                     Spacer()
                 }
-
+                
                 Button("Cancel") {
                     isPresented = false
                 }.foregroundStyle(Color.themeRed)
             }.padding([.leading, .trailing], 100.0)
             
-        
+            
         }.confirmationDialog("Choose a source", isPresented: $showSourcePicker, titleVisibility: .hidden) {
-            Button("Take photo with camera") {
+            Button("Take photo with camera", systemImage: "camera") {
                 sourceType = .camera
                 showPicker = true
             }
-            Button("Choose photo from photo library") {
+            Button("Choose photo from photo library", systemImage: "photo") {
                 sourceType = .photoLibrary
                 showPicker = true
             }
         }
-            .sheet(isPresented: $showPicker) {
-                if let sourceType = sourceType {
-                    ImagePicker(selectedImage: $imageToUpload, sourceType: sourceType)
-                }
-                
+        .sheet(isPresented: $showPicker) {
+            if let sourceType = sourceType {
+                ImagePicker(selectedImage: $imageToUpload, sourceType: sourceType)
+            }
+            
         }.onChange(of: imageToUpload) {
             showPicker = false
             if let data = imageToUpload.jpegData(compressionQuality: 0.8){
@@ -106,7 +106,7 @@ struct ToDoItemDetailView: View {
             }
             
         }
-
+        
     }
 }
 

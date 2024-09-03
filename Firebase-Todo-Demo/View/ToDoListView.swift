@@ -29,18 +29,18 @@ struct ToDoListView: View {
                                 viewModel.deleteToDoItem(viewModel.toDoItems[i])
                             }
                         }
-
+                        
                         
                     }
                 }
-
+                
                 Section {
                     HStack {
                         Image(systemName: "plus.circle").renderingMode(.template).foregroundColor(.accentColor)
                         TextField("New Task", text: $newToDoItemName) {
                             
                             guard !newToDoItemName.isEmpty else {return}
-
+                            
                             withAnimation {
                                 viewModel.addToDoItemNamed(newToDoItemName)
                             }
@@ -49,9 +49,9 @@ struct ToDoListView: View {
                         }
                         
                     }
-
+                    
                 }
-
+                
             }.onSubmit {
                 newToDoItemName = ""
             }
@@ -68,6 +68,6 @@ struct ToDoListView: View {
 
 /*
  #Preview {
-    ToDoListView()
+ ToDoListView()
  }
  */

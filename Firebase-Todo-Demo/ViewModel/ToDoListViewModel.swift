@@ -19,7 +19,7 @@ import FirebaseAnalytics
     var toDoItems:[ToDoItem] = []
     var documentCollection:CollectionReference?
     var isLoading:Bool = false
-
+    
     
     private var db = Firestore.firestore()
     private var listener:(any ListenerRegistration)?
@@ -58,22 +58,22 @@ import FirebaseAnalytics
         else {
             listener?.remove()
         }
-
+        
     }
-                                                    
+    
     func snapshotListener(_ snapshot:QuerySnapshot?, error:(any Error)?) {
         errorMessage = nil
-
-            guard (error == nil) else {
-                errorMessage = error?.localizedDescription
-                return
-            }
         
-            guard let documents = snapshot?.documents else {
-                errorMessage = "Snapshot has no documents"
-                return
-            }
-            
+        guard (error == nil) else {
+            errorMessage = error?.localizedDescription
+            return
+        }
+        
+        guard let documents = snapshot?.documents else {
+            errorMessage = "Snapshot has no documents"
+            return
+        }
+        
         toDoItems = documents.compactMap{(snapshot:QueryDocumentSnapshot) in
             let result = Result { try snapshot.data(as: ToDoItem.self)}
             switch result {
@@ -84,7 +84,7 @@ import FirebaseAnalytics
             }
             return nil
         }.sorted {$0.createDate < $1.createDate}
-
+        
     }
     func deleteToDoItem(_ item:ToDoItem) {
         errorMessage = nil
@@ -96,7 +96,7 @@ import FirebaseAnalytics
         
     }
     func addToDoItemNamed(_ name:String) {
-
+        
         guard let uid = user?.uid else {
             errorMessage = "User not signed in"
             return
@@ -113,7 +113,7 @@ import FirebaseAnalytics
             errorMessage = error.localizedDescription
         }
     }
-
+    
     
 }
 

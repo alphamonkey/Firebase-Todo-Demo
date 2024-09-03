@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct ToDoListItemView: View {
-
+    
     @State var viewModel:ToDoItemViewModel
     @State var isShowingDetail:Bool
     private var priorityicons = ["💤", "⏰", "‼️", "🔥"]
     init(item:ToDoItem, viewModel:ToDoItemViewModel) {
-
+        
         self.viewModel = viewModel
         self.isShowingDetail = false
         
@@ -46,8 +46,8 @@ struct ToDoListItemView: View {
             }.buttonStyle(.plain).foregroundStyle(Color.secondary).sheet(isPresented: $isShowingDetail, content: {
                 ToDoItemDetailView(viewModel:viewModel, isPresented:$isShowingDetail)
             })
-             
-        
+            
+            
         }
     }
 }

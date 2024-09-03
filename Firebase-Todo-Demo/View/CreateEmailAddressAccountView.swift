@@ -14,7 +14,7 @@ struct CreateEmailAddressAccountView: View {
     @State var user:User? = Auth.auth().currentUser
     
     var body: some View {
-
+        
         if let errorMessage = errorMessage {
             Text(errorMessage).foregroundStyle(Color.red)
         }

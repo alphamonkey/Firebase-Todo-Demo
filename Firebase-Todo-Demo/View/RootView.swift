@@ -9,11 +9,11 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 struct RootView: View {
-
+    
     
     @State var viewModel:ToDoListViewModel = ToDoListViewModel()
     
-
+    
     var body: some View {
         VStack {
             if let _ = viewModel.user {
