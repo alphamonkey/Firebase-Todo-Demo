@@ -13,7 +13,8 @@ struct ToDoItemDetailView: View {
     @Binding var isPresented:Bool
     @State var showPicker = false
     @State var imageToUpload = UIImage()
-    
+    @State var showSourcePicker = false
+    @State var sourceType:UIImagePickerController.SourceType?
     
     init(viewModel:ToDoItemViewModel, isPresented:Binding<Bool>) {
         self.viewModel = viewModel
@@ -71,7 +72,7 @@ struct ToDoItemDetailView: View {
                     }.foregroundStyle(Color.accentColor)
                     Spacer()
                     Button("Upload") {
-                        showPicker = true
+                        showSourcePicker = true
                     }
                     Spacer()
                 }
@@ -82,8 +83,21 @@ struct ToDoItemDetailView: View {
             }.padding([.leading, .trailing], 100.0)
             
         
-        }.sheet(isPresented: $showPicker) {
-            ImagePicker(selectedImage: $imageToUpload)
+        }.confirmationDialog("Choose a source", isPresented: $showSourcePicker, titleVisibility: .hidden) {
+            Button("Take photo with camera") {
+                sourceType = .camera
+                showPicker = true
+            }
+            Button("Choose photo from photo library") {
+                sourceType = .photoLibrary
+                showPicker = true
+            }
+        }
+            .sheet(isPresented: $showPicker) {
+                if let sourceType = sourceType {
+                    ImagePicker(selectedImage: $imageToUpload, sourceType: sourceType)
+                }
+                
         }.onChange(of: imageToUpload) {
             showPicker = false
             if let data = imageToUpload.jpegData(compressionQuality: 0.8){

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ImagePicker:UIViewControllerRepresentable {
     @Binding var selectedImage:UIImage
+    var sourceType:UIImagePickerController.SourceType
     
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {
         
@@ -20,6 +21,7 @@ struct ImagePicker:UIViewControllerRepresentable {
         let imagePicker = UIImagePickerController()
         imagePicker.allowsEditing = false
         imagePicker.delegate = context.coordinator
+        imagePicker.sourceType = sourceType
         return imagePicker
         
     }
