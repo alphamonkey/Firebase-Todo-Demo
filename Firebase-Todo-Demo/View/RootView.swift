@@ -26,7 +26,7 @@ struct RootView: View {
                         }, placeholder: {ProgressView()})
                     }
                     else {
-                        Image(systemName: "person.crop.circle").resizable().scaledToFit().frame(width: 33.0, height:33.0).clipShape(Circle()).padding([.leading], 18.0).foregroundStyle(Color.accentColor)
+                        Image("firebaselogo").resizable().scaledToFit().frame(width: 33.0, height:33.0).clipShape(Circle()).padding([.leading], 18.0).foregroundStyle(Color.accentColor)
                     }
                     if let displayName = loginViewModel.user?.displayName {
                         Text(displayName)
@@ -43,8 +43,8 @@ struct RootView: View {
                  ToDoListView(viewModel:viewModel)
             }
             else {
-                //EmailAddressLoginView(viewModel: viewModel)
-                GoogleLoginView(viewModel:viewModel, loginViewModel: loginViewModel)
+
+                ProviderLoginView(viewModel:viewModel, loginViewModel: loginViewModel)
             }
         }
         

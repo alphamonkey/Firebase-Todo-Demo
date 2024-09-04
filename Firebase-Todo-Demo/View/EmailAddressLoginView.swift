@@ -18,25 +18,25 @@ struct EmailAddressLoginView: View {
     
     var body: some View {
         VStack {
-            if viewModel.isLoading {
-                ProgressView()
-            }
-            if let errorMessage = viewModel.errorMessage {
-                Text(errorMessage).foregroundStyle(Color.themeRed)
-            }
-            
-            TextField("Email Address", text:$viewModel.email).textInputAutocapitalization(.never)
-            
-            SecureField("Password", text: $viewModel.password)
-            
-            Button("Log in") {
-                guard !viewModel.email.isEmpty && !viewModel.password.isEmpty else {
-                    return;
+            VStack {
+                
+                
+                if let errorMessage = viewModel.errorMessage {
+                    Text(errorMessage).foregroundStyle(Color.red)
                 }
-                viewModel.emailLogin(email: viewModel.email, password: viewModel.password)
-            }
-            
-        }
+                if let user = viewModel.user {
+                    Text(user.email ?? "Created but no display name").foregroundStyle(Color.green)
+                }
+                TextField("Email Address", text: $viewModel.email).textInputAutocapitalization(.never).textFieldStyle(.roundedBorder).padding([.bottom], 8.0)
+                
+                SecureField("Password", text: $viewModel.password).textFieldStyle(.roundedBorder).padding([.bottom], 8.0)
+                
+                Button("Log in") {
+                    viewModel.emailLogin()
+                }.foregroundStyle(.white).buttonStyle(.bordered)
+            }.padding(18.0).navigationTitle("Log In").toolbarBackground(.visible, for: .navigationBar).toolbarBackground(.accent, for: .navigationBar).toolbarColorScheme(.dark, for: .navigationBar).background(.accent).shadow(radius:5.0, y:2.0)
+        }.padding(18.0)
+    
     }
     
     

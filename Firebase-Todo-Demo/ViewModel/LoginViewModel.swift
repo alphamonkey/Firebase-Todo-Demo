@@ -22,14 +22,31 @@ import FirebaseAnalytics
     init() {
         let _ = Auth.auth().addStateDidChangeListener(handleAuthStateChange)
     }
-    
+    func createEmailUser() {
+       
+            errorMessage = nil;
+            guard !email.isEmpty && !email.isEmpty else {
+                return;
+            }
+            Auth.auth().createUser(withEmail: email, password: email, completion: {result, error in
+                if let err = error {
+                    self.errorMessage = err.localizedDescription
+                }
+                if let authResult = result {
+                    self.user = authResult.user
+                }
+                
+            })
+            
+        
+    }
     func handleAuthStateChange(auth:Auth, user:User?) {
         errorMessage = nil
         self.user = user
         self.auth = auth
     }
     
-    func emailLogin(email:String, password:String) {
+    func emailLogin() {
         errorMessage = nil
         isLoading = true
         Auth.auth().signIn(withEmail: email, password: password) {(result, error) in
