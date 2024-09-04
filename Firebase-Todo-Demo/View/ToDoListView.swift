@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ToDoListView: View {
     @State var newToDoItemName:String = ""
-    
+    @State var hideCompletedItems = UserDefaults.standard.bool(forKey: "hideComplete")
     let viewModel:ToDoListViewModel
     
     init(viewModel:ToDoListViewModel){
@@ -24,7 +24,7 @@ struct ToDoListView: View {
 
             List {
                 Section("To Do List") {
-                    ForEach(viewModel.toDoItems, id:\.self) { item in
+                    ForEach(hideCompletedItems ? viewModel.toDoItems.filter {$0.done == false } : viewModel.toDoItems, id:\.self) { item in
                         ToDoListItemView(item:item, viewModel:ToDoItemViewModel(item))
                     }.onDelete {(offsets) in
                         withAnimation {
@@ -44,6 +44,14 @@ struct ToDoListView: View {
                             withAnimation {
                                 viewModel.addToDoItemNamed(newToDoItemName)
                             }
+                        }
+                    }
+                }
+                
+                Section {
+                    HStack {
+                        Toggle("Hide completed items", isOn: $hideCompletedItems).onChange(of:hideCompletedItems) {(_, newValue) in
+                            UserDefaults.standard.setValue(hideCompletedItems, forKey: "hideComplete")
                         }
                     }
                 }
