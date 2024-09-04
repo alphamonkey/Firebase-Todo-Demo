@@ -33,7 +33,7 @@ struct ToDoListItemView: View {
                     Text(priorityicons[priority] + " ")
                 }
                 VStack (alignment:.leading) {
-                    Text(viewModel.item.name)
+                    Text(viewModel.item.name).strikethrough(viewModel.item.done).italic(viewModel.item.done).foregroundStyle(viewModel.item.done ? Color.secondary : Color.primary)
                     if let dueDate = viewModel.item.formattedDate() {
                         Text(dueDate).foregroundStyle(viewModel.item.isOverDue ? Color.themeRed : Color.secondary)
                             .font(.footnote)
