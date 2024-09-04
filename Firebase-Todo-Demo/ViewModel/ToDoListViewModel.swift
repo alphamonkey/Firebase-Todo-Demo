@@ -35,10 +35,10 @@ import GoogleSignIn
             documentCollection = db.collection("Users/\(user.uid)/ToDoItems")
             listener = documentCollection?.addSnapshotListener(snapshotListener)
         }
+        
         else {
             listener?.remove()
         }
-        
     }
     
     func snapshotListener(_ snapshot:QuerySnapshot?, error:(any Error)?) {

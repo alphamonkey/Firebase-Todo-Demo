@@ -47,22 +47,17 @@ struct ProviderLoginView: View {
 
                     
                         Button("Log in with email account") {
-                            navPath.append("Login")
+                            navPath.append(EmailAddressLoginView.ViewMode.login)
                             
                         }.buttonStyle(.borderedProminent).tint(.accent).frame(height:44.0).shadow(radius:5.0, y:2.0)
                         
                         Button("Create an account with your email address") {
-                            navPath.append("Create")
+                            navPath.append(EmailAddressLoginView.ViewMode.create)
                         }.buttonStyle(.borderedProminent).tint(.themeBlue).frame(height:44.0).shadow(radius:5.0, y:2.0)
                     
 
-                }.navigationDestination(for: String.self) {view in
-                    if view == "Create" {
-                        CreateEmailAddressAccountView(viewModel: loginViewModel)
-                    }
-                    if view == "Login" {
-                        EmailAddressLoginView(viewModel: loginViewModel)
-                    }
+                }.navigationDestination(for: EmailAddressLoginView.ViewMode.self) {mode in
+                        EmailAddressLoginView(viewModel: loginViewModel, mode:mode)
                 }
                 
             }

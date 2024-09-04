@@ -17,11 +17,15 @@ struct ToDoListView: View {
     }
     var body: some View {
         VStack {
+            
+            if let message = viewModel.errorMessage {
+                Text(message).foregroundStyle(Color.themeRed)
+            }
+
             List {
                 Section("To Do List") {
                     ForEach(viewModel.toDoItems, id:\.self) { item in
                         ToDoListItemView(item:item, viewModel:ToDoItemViewModel(item))
-                        
                     }.onDelete {(offsets) in
                         withAnimation {
                             for offset in offsets {
@@ -29,8 +33,6 @@ struct ToDoListView: View {
                                 viewModel.deleteToDoItem(viewModel.toDoItems[i])
                             }
                         }
-                        
-                        
                     }
                 }
                 
@@ -38,27 +40,17 @@ struct ToDoListView: View {
                     HStack {
                         Image(systemName: "plus.circle").renderingMode(.template).foregroundColor(.accentColor)
                         TextField("New Task", text: $newToDoItemName) {
-                            
                             guard !newToDoItemName.isEmpty else {return}
-                            
                             withAnimation {
                                 viewModel.addToDoItemNamed(newToDoItemName)
                             }
-                            
-                            
                         }
-                        
                     }
-                    
                 }
                 
             }.onSubmit {
                 newToDoItemName = ""
             }
-            if let message = viewModel.errorMessage {
-                Text(message).foregroundStyle(Color.themeRed)
-            }
-
         }
         
     }

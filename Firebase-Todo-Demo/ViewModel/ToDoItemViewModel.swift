@@ -22,6 +22,7 @@ import FirebaseStorage
     var hasPriority:Bool = false
     var priority:Int = 0
     var documentCollection:CollectionReference?
+    var isDownloadingImage = false
     var isLoading = false
     var isUploading = false
     
@@ -53,7 +54,7 @@ import FirebaseStorage
         let maxSize = item.imageDownloadSize else {
             return
         }
-        
+        isDownloadingImage = true
         let storage = Storage.storage()
         let downloadRef = storage.reference(forURL: urlString)
         
@@ -65,6 +66,7 @@ import FirebaseStorage
             else if let data = data {
                 self.image = UIImage(data: data)
             }
+            self.isDownloadingImage = false
         })
         
     }
@@ -92,6 +94,7 @@ import FirebaseStorage
                     self.errorMessage = "Unable to retrieve download URL: \(error.localizedDescription)"
                     return
                 }
+                self.image = UIImage(data: data)
                 self.item.imageDownloadURL = url?.absoluteString
                 self.item.imageDownloadSize = metadata.size
             }

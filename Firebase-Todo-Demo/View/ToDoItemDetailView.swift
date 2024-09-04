@@ -27,59 +27,77 @@ struct ToDoItemDetailView: View {
             if let errorMessage = viewModel.errorMessage {
                 Text(errorMessage).foregroundStyle(Color.themeRed)
             }
-            TextField("", text:$viewModel.name)
-            TextField("Description", text:$viewModel.description, axis:.vertical).lineLimit(5...10)
-            
-            Button("Due Date", systemImage: viewModel.hasDueDate ? "checkmark.circle.fill":"circle") {
-                viewModel.hasDueDate.toggle()
-            }
-            
-            if (viewModel.hasDueDate) {
-                DatePicker("Due Date", selection:$viewModel.dueDate)
-            }
-            
-            Button("Priority", systemImage: viewModel.hasPriority ? "checkmark.circle.fill":"circle") {
-                viewModel.hasPriority.toggle()
-            }
-            
-            if (viewModel.hasPriority) {
-                Picker("Priority", selection:$viewModel.priority) {
-                    Text("💤 Low").tag(0)
-                    Text("⏰ Medium").tag(1)
-                    Text("‼️ High").tag(2)
-                    Text("🔥 Urgent").tag(3)
+            List {
+                VStack {
+                    TextField("", text:$viewModel.name).fontWeight(.bold)
+                    Divider().overlay(Color.accentColor)
+                    HStack {
+                        TextField("Description", text:$viewModel.description, axis:.vertical).lineLimit(5...10)
+                        if let image = viewModel.image {
+                            Image(uiImage: image).resizable().scaledToFit().clipShape(.rect(cornerRadius: 10.0)).onTapGesture {
+                                showSourcePicker = true
+                            }
+                        } else if viewModel.isDownloadingImage || viewModel.isUploading {
+                            ProgressView().controlSize(.extraLarge).tint(Color.accentColor)
+                        } else {
+                            
+                            Image(systemName: "photo.badge.plus").font(.system(size:72)).foregroundStyle(Color.secondary).onTapGesture {
+                                showSourcePicker = true
+                            }
+                            
+                            
+                        }
+                    }
+                }
+                Section {
+                    HStack {
+                        Button("", systemImage: viewModel.hasDueDate ? "checkmark.circle.fill":"circle") {
+                            viewModel.hasDueDate.toggle()
+                        }.buttonStyle(.plain).foregroundStyle(Color.accentColor)
+                        VStack {
+                            Text("Due Date")
+                            
+                            if (viewModel.hasDueDate) {
+                                DatePicker("", selection:$viewModel.dueDate).frame(height:50.0).clipped().buttonStyle(.plain)
+                            }
+                        }
+                        
+                    }
+                }
+                Section {
+                    HStack {
+                        Button("", systemImage: viewModel.hasPriority ? "checkmark.circle.fill":"circle") {
+                            viewModel.hasPriority.toggle()
+                        }.buttonStyle(.plain).foregroundStyle(Color.accentColor)
+                        Text("Priority")
+                        
+                        if (viewModel.hasPriority) {
+                            Picker("", selection:$viewModel.priority) {
+                                Text("💤 Low").tag(0)
+                                Text("⏰ Medium").tag(1)
+                                Text("‼️ High").tag(2)
+                                Text("🔥 Urgent").tag(3)
+                            }.buttonStyle(.plain)
+                        }
+                    }
                 }
             }
-            if(viewModel.isUploading) {
-                ProgressView().frame(width:400, height:400)
-            }
-            else if let image = viewModel.image {
-                Image(uiImage: image).resizable().scaledToFit().frame(width: 400.0, height:400.0)
-            }
+
             Spacer()
-            
-            
-            
-            
-            
-            
+
             HStack {
                 if(!viewModel.isUploading) {
                     Button("Save") {
                         isPresented = false
                         viewModel.saveToDoItem()
                         
-                    }.foregroundStyle(Color.accentColor)
-                    Spacer()
-                    Button("Upload") {
-                        showSourcePicker = true
-                    }
-                    Spacer()
+                    }.buttonStyle(.borderedProminent).tint(.accentColor).frame(height:44.0).shadow(radius:5.0, y:2.0)
+
                 }
-                
+                Spacer()
                 Button("Cancel") {
                     isPresented = false
-                }.foregroundStyle(Color.themeRed)
+                }.buttonStyle(.borderedProminent).tint(.themeRed).frame(height:44.0).shadow(radius:5.0, y:2.0)
             }.padding([.leading, .trailing], 100.0)
             
             
@@ -101,7 +119,7 @@ struct ToDoItemDetailView: View {
         }.onChange(of: imageToUpload) {
             showPicker = false
             if let data = imageToUpload.jpegData(compressionQuality: 0.8){
-                viewModel.image = imageToUpload
+
                 viewModel.uploadImage(data: data)
             }
             

@@ -10,40 +10,19 @@ import FirebaseAuth
 import FirebaseFirestore
 struct RootView: View {
     
-    
     @State var viewModel:ToDoListViewModel = ToDoListViewModel()
     @State var loginViewModel:LoginViewModel = LoginViewModel()
     
     var body: some View {
         VStack(alignment:.leading) {
+            
             if let _ = loginViewModel.user {
-                HStack {
-                    if let pic = loginViewModel.user?.photoURL
-                    {
-                        AsyncImage(url: pic, content: {image in
-                            image.resizable().scaledToFit().frame(width: 33.0, height:33.0).clipShape(Circle()).padding([.leading], 18.0)
-                            
-                        }, placeholder: {ProgressView()})
-                    }
-                    else {
-                        Image("firebaselogo").resizable().scaledToFit().frame(width: 33.0, height:33.0).clipShape(Circle()).padding([.leading], 18.0).foregroundStyle(Color.accentColor)
-                    }
-                    if let displayName = loginViewModel.user?.displayName {
-                        Text(displayName)
-                    }
-                    else {
-                        Text(loginViewModel.user?.email ?? "")
-                    }
-                    Spacer()
-                    Button("", systemImage: "rectangle.portrait.and.arrow.forward") {
-                        loginViewModel.logout()
-                    }.foregroundStyle(Color.themeRed)
-                }
+                TopBarView(viewModel: loginViewModel)
                 Divider().overlay(Color.accentColor)
-                 ToDoListView(viewModel:viewModel)
+                ToDoListView(viewModel:viewModel)
             }
+            
             else {
-
                 ProviderLoginView(viewModel:viewModel, loginViewModel: loginViewModel)
             }
         }
