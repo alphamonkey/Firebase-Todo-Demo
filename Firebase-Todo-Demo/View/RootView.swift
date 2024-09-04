@@ -12,32 +12,39 @@ struct RootView: View {
     
     
     @State var viewModel:ToDoListViewModel = ToDoListViewModel()
-    
+    @State var loginViewModel:LoginViewModel = LoginViewModel()
     
     var body: some View {
         VStack(alignment:.leading) {
-            if let _ = viewModel.user {
+            if let _ = loginViewModel.user {
                 HStack {
-                    if let pic = viewModel.user?.photoURL
+                    if let pic = loginViewModel.user?.photoURL
                     {
                         AsyncImage(url: pic, content: {image in
-                            image.resizable().scaledToFit().frame(width: 44.0, height:44.0).clipShape(Circle()).padding([.leading], 18.0)
+                            image.resizable().scaledToFit().frame(width: 33.0, height:33.0).clipShape(Circle()).padding([.leading], 18.0)
                             
                         }, placeholder: {ProgressView()})
                     }
-                    if let displayName = viewModel.user?.displayName {
+                    else {
+                        Image(systemName: "person.crop.circle").resizable().scaledToFit().frame(width: 33.0, height:33.0).clipShape(Circle()).padding([.leading], 18.0).foregroundStyle(Color.accentColor)
+                    }
+                    if let displayName = loginViewModel.user?.displayName {
                         Text(displayName)
                     }
                     else {
-                        Text(viewModel.user?.email ?? "")
+                        Text(loginViewModel.user?.email ?? "")
                     }
+                    Spacer()
+                    Button("", systemImage: "rectangle.portrait.and.arrow.forward") {
+                        loginViewModel.logout()
+                    }.foregroundStyle(Color.themeRed)
                 }
                 Divider().overlay(Color.accentColor)
                  ToDoListView(viewModel:viewModel)
             }
             else {
                 //EmailAddressLoginView(viewModel: viewModel)
-                GoogleLoginView(viewModel:viewModel)
+                GoogleLoginView(viewModel:viewModel, loginViewModel: loginViewModel)
             }
         }
         

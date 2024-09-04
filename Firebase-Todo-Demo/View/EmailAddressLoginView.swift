@@ -9,12 +9,10 @@ import SwiftUI
 
 
 struct EmailAddressLoginView: View {
-    @State var email:String = ""
-    @State var password:String = ""
+
+    @State var viewModel:LoginViewModel
     
-    @State var viewModel:ToDoListViewModel
-    
-    init(viewModel:ToDoListViewModel) {
+    init(viewModel:LoginViewModel) {
         self.viewModel = viewModel
     }
     
@@ -27,15 +25,15 @@ struct EmailAddressLoginView: View {
                 Text(errorMessage).foregroundStyle(Color.themeRed)
             }
             
-            TextField("Email Address", text:$email).textInputAutocapitalization(.never)
+            TextField("Email Address", text:$viewModel.email).textInputAutocapitalization(.never)
             
-            SecureField("Password", text: $password)
+            SecureField("Password", text: $viewModel.password)
             
             Button("Log in") {
-                guard !email.isEmpty && !password.isEmpty else {
+                guard !viewModel.email.isEmpty && !viewModel.password.isEmpty else {
                     return;
                 }
-                viewModel.emailLogin(email: email, password: password)
+                viewModel.emailLogin(email: viewModel.email, password: viewModel.password)
             }
             
         }

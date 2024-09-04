@@ -21,6 +21,7 @@
 		BC0573C62C87AD1900C67F72 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BC0573C52C87AD1900C67F72 /* GoogleSignInSwift */; };
 		BC0573C82C87ADC200C67F72 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BC0573C72C87ADC200C67F72 /* GoogleService-Info.plist */; };
 		BC0573CC2C87AE1900C67F72 /* GoogleLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0573CB2C87AE1900C67F72 /* GoogleLoginView.swift */; };
+		BCE4EEBB2C87D61700EBB366 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE4EEBA2C87D61700EBB366 /* LoginViewModel.swift */; };
 		BCF3A6402C80FE89000674E5 /* Firebase_Todo_DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCF3A63F2C80FE89000674E5 /* Firebase_Todo_DemoApp.swift */; };
 		BCF3A6462C80FE8E000674E5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCF3A6452C80FE8E000674E5 /* Assets.xcassets */; };
 		BCF3A6492C80FE8E000674E5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCF3A6482C80FE8E000674E5 /* Preview Assets.xcassets */; };
@@ -43,6 +44,7 @@
 		BC0573C72C87ADC200C67F72 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BC0573CB2C87AE1900C67F72 /* GoogleLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleLoginView.swift; sourceTree = "<group>"; };
 		BC0573CD2C87AE7000C67F72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		BCE4EEBA2C87D61700EBB366 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		BCF3A63C2C80FE89000674E5 /* Firebase-Todo-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Firebase-Todo-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCF3A63F2C80FE89000674E5 /* Firebase_Todo_DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Firebase_Todo_DemoApp.swift; sourceTree = "<group>"; };
 		BCF3A6452C80FE8E000674E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			children = (
 				BC0196FF2C818086002B61A7 /* ToDoListViewModel.swift */,
 				BC01970A2C8262C7002B61A7 /* ToDoItemViewModel.swift */,
+				BCE4EEBA2C87D61700EBB366 /* LoginViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -232,6 +235,7 @@
 				BC0573CC2C87AE1900C67F72 /* GoogleLoginView.swift in Sources */,
 				BCF3A65B2C81173C000674E5 /* EmailAddressLoginView.swift in Sources */,
 				BC0197072C824A80002B61A7 /* ToDoListItemView.swift in Sources */,
+				BCE4EEBB2C87D61700EBB366 /* LoginViewModel.swift in Sources */,
 				BC0573C12C879A8B00C67F72 /* ImagePicker.swift in Sources */,
 				BCF3A6402C80FE89000674E5 /* Firebase_Todo_DemoApp.swift in Sources */,
 				BC0197052C8229F5002B61A7 /* ToDoListView.swift in Sources */,

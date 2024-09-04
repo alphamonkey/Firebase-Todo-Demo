@@ -14,84 +14,23 @@ import FirebaseCore
 import GoogleSignIn
 @Observable class ToDoListViewModel {
     
-    var user:User?
-    var auth:Auth?
-    var errorMessage:String?
     var toDoItems:[ToDoItem] = []
     var documentCollection:CollectionReference?
+    var errorMessage:String?
     var isLoading:Bool = false
-    var email = ""
-    var password = ""
-    let provider = OAuthProvider(providerID: "github.com")
+    
     private var db = Firestore.firestore()
     private var listener:(any ListenerRegistration)?
+    private var uid:String?
     
     init() {
         let _ = Auth.auth().addStateDidChangeListener(handleAuthStateChange)
     }
-    func githubLogin() {
-        
-        provider.customParameters = ["allow_signup":"false"]
-        provider.scopes = ["read:user", "user:email"]
-        
-        provider.getCredentialWith(nil) {(credential, error) in
-            guard let credential = credential else {
-                self.errorMessage = "No credential retrieved"
-                return
-            }
-            if let error = error {
-                self.errorMessage = error.localizedDescription
-                return
-            }
-            Auth.auth().signIn(with:credential) {(authResult, error) in
-                if let error = error {
-                    self.errorMessage = error.localizedDescription
-                    return
-                }
-                
-            }
-        }
-    }
-    func googleLogin() {
-        Task {
-            guard let clientID = FirebaseApp.app()?.options.clientID else {return}
-            
-            let config = GIDConfiguration(clientID: clientID)
-            GIDSignIn.sharedInstance.configuration = config
-            
-            if let scene = await UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let rootViewController = await scene.windows.first?.rootViewController {
-                let result = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
-                if let idToken = result.user.idToken?.tokenString {
-                    let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: result.user.accessToken.tokenString)
-                    try await Auth.auth().signIn(with: credential)
-                }
-            }
-        }
-    }
-    func emailLogin(email:String, password:String) {
-        errorMessage = nil
-        isLoading = true
-        Auth.auth().signIn(withEmail: email, password: password) {(result, error) in
-            if let err = error {
-                self.errorMessage = err.localizedDescription
-            }
-            else if let res = result {
-                Analytics.logEvent(AnalyticsEventLogin, parameters:[AnalyticsParameterMethod:res.user.uid] )
-            }
-            self.isLoading = false
-        }
-    }
-    
-    func logout() {
-        errorMessage = nil
-        try? auth?.signOut()
-    }
-    
+
     func handleAuthStateChange(auth:Auth, user:User?) {
+        uid = user?.uid
         errorMessage = nil
-        self.user = user
-        self.auth = auth
+
         if let user = user {
             documentCollection = db.collection("Users/\(user.uid)/ToDoItems")
             listener = documentCollection?.addSnapshotListener(snapshotListener)
@@ -127,6 +66,7 @@ import GoogleSignIn
         }.sorted {$0.createDate < $1.createDate}
         
     }
+    
     func deleteToDoItem(_ item:ToDoItem) {
         errorMessage = nil
         if let id = item.id {
@@ -138,7 +78,7 @@ import GoogleSignIn
     }
     func addToDoItemNamed(_ name:String) {
         
-        guard let uid = user?.uid else {
+        guard let uid = uid else {
             errorMessage = "User not signed in"
             return
         }

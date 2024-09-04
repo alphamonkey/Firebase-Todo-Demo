@@ -58,9 +58,7 @@ struct ToDoListView: View {
             if let message = viewModel.errorMessage {
                 Text(message).foregroundStyle(Color.themeRed)
             }
-            Button("Log Out") {
-                viewModel.logout()
-            }.foregroundColor(Color.themeRed)
+
         }
         
     }

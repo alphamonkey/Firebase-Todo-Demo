@@ -12,20 +12,22 @@ import FirebaseCore
 import FirebaseAuth
 struct GoogleLoginView: View {
     @State var viewModel:ToDoListViewModel
+    @State var loginViewModel:LoginViewModel
     
-    init(viewModel:ToDoListViewModel) {
+    init(viewModel:ToDoListViewModel, loginViewModel:LoginViewModel) {
         self.viewModel = viewModel
+        self.loginViewModel = loginViewModel
     }
     
     var body: some View {
         VStack {
             
             GoogleSignInButton {
-                viewModel.googleLogin()
+                loginViewModel.googleLogin()
             }
             Button {
 
-                viewModel.githubLogin()
+                loginViewModel.githubLogin()
                     
                 
             } label: {
@@ -39,15 +41,16 @@ struct GoogleLoginView: View {
                     Text(errorMessage).foregroundStyle(Color.themeRed)
                 }
                 
-                TextField("Email Address", text:$viewModel.email).textInputAutocapitalization(.never)
+                TextField("Email Address", text:$loginViewModel.email).textInputAutocapitalization(.never)
                 
-                SecureField("Password", text: $viewModel.password)
+                SecureField("Password", text: $loginViewModel.password)
                 
                 Button("Log in") {
-                    guard !viewModel.email.isEmpty && !viewModel.password.isEmpty else {
-                        return;
+                    guard !loginViewModel.email.isEmpty && !loginViewModel.password.isEmpty else {
+                        return
                     }
-                    viewModel.emailLogin(email: viewModel.email, password: viewModel.password)
+                    
+                    loginViewModel.emailLogin(email: loginViewModel.email, password: loginViewModel.password)
                 }
                 
             }
